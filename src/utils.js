@@ -1,6 +1,7 @@
 import {useRef, useState} from 'react';
 import {Animated, Easing, I18nManager} from 'react-native';
 import moment from 'moment-jalaali';
+import zhTWConfigs from './locale/zh_TW'
 
 const m = moment();
 const jalaaliConfigs = {
@@ -57,14 +58,14 @@ const gregorianConfigs = {
 };
 
 class utils {
-  constructor({minimumDate, maximumDate, isGregorian, mode, reverse, configs}) {
+  constructor({minimumDate, maximumDate, isGregorian, mode, reverse, configs, locale}) {
     this.data = {
       minimumDate,
       maximumDate,
       isGregorian,
       reverse: reverse === 'unset' ? !isGregorian : reverse,
     };
-    this.config = isGregorian ? gregorianConfigs : jalaaliConfigs;
+    this.config = isGregorian ? this.getlocaleConfigs(locale) : jalaaliConfigs;
     this.config = {...this.config, ...configs};
     if (mode === 'time' || mode === 'datepicker') {
       this.config.selectedFormat = this.config.dateFormat + ' ' + this.config.timeFormat;
@@ -75,6 +76,18 @@ class utils {
     return {flexDirection: this.data.reverse ? (I18nManager.isRTL ? 'row' : 'row-reverse') : 'row'};
   }
 
+  getlocaleConfigs = (locale) => {
+    let configs;
+    switch (locale) {
+      case 'zh-TW':
+        configs = zhTWConfigs;
+        break;
+      default:
+        configs = gregorianConfigs;
+        break;
+    }
+    return configs;
+  }
   getFormated = (date, formatName = 'selectedFormat') => date.format(this.config[formatName]);
 
   getFormatedDate = (date = new Date(), format = 'YYYY/MM/DD') => moment(date).format(format);
