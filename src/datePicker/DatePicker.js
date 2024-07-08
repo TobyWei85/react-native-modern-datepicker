@@ -143,6 +143,7 @@ DatePicker.defaultProps = {
   mode: 'datepicker',
   minuteInterval: 5,
   style: {},
+  locale: '',
 };
 
 DatePicker.propTypes = {
@@ -164,6 +165,7 @@ DatePicker.propTypes = {
   mode: PropTypes.oneOf(modeArray),
   minuteInterval: PropTypes.oneOf(minuteIntervalArray),
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  locale: PropTypes.string,
 };
 
 export {DatePicker, CalendarContext, useCalendar};
